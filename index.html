@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Homework</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-main: #f4f5fa;
+      --sidebar-bg: #f8f9fe;
+      --primary: #6c5ce7;
+      --primary-light: #e0dcfc;
+      --accent-green: #70a19f;
+      --card-purple: #f3f0ff;
+      --card-green: #f0f7f4;
+      --card-red: #fff0f0;
+      --text-dark: #2d3436;
+      --text-gray: #636e72;
+      --danger: #ff7675;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Kanit', sans-serif; }
+
+    body {
+      background-color: var(--bg-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text-dark);
+    }
+
+    .app-container {
+      width: 1000px;
+      height: 600px;
+      background: #ffffff;
+      border-radius: 20px;
+      display: flex;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 230px;
+      background-color: var(--sidebar-bg);
+      padding: 25px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 30px;
+    }
+
+    .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: var(--text-gray);
+      font-weight: 500;
+      border-radius: 12px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-item.active a, .nav-item a:hover {
+      background-color: #e8e5ff;
+      color: var(--primary);
+    }
+
+    .nav-item i { font-size: 18px; width: 20px; }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 20px;
+      color: #a29bfe;
+      font-weight: 600;
+    }
+
+    .user-profile i { font-size: 32px; color: #ccc; }
+
+    /* Main Area & Tab Switching */
+    .main-area { flex: 1; display: flex; position: relative; }
+    
+    .tab-content {
+      width: 100%;
+      height: 100%;
+      display: none;
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    .tab-content.active { display: flex; }
+
+    /* Dashboard Layout Inside Homework Tab */
+    #tab-homework { gap: 20px; padding: 0; }
+
+    .main-content {
+      flex: 1;
+      padding: 30px 15px 30px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      overflow-y: auto;
+    }
+
+    .greeting {
+      font-size: 22px;
+      font-weight: 500;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 5px;
+    }
+
+    /* Cards Grid */
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+    .stat-card { padding: 15px 20px; border-radius: 16px; text-align: center; }
+    .stat-card.purple { background-color: var(--card-purple); }
+    .stat-card.green { background-color: var(--card-green); }
+
+    .stat-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+    .stat-number { font-size: 36px; font-weight: 600; line-height: 1; }
+    .stat-unit { font-size: 12px; color: var(--text-gray); margin-top: 5px; }
+
+    .progress-card { background-color: var(--card-purple); padding: 15px 20px; border-radius: 16px; }
+    .progress-percentage { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 28px;
+      background-color: #dcd6f7;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background-color: #7c6cf0;
+      border-radius: 14px;
+      transition: width 0.3s ease;
+    }
+
+    .overdue-card { background-color: var(--card-red); padding: 15px 20px; border-radius: 16px; }
+
+    .overdue-item {
+      background-color: #ffffff;
+      padding: 10px 15px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .overdue-tag { color: var(--danger); font-size: 12px; font-weight: 500; }
+
+    /* Right Panel */
+    .right-panel {
+      width: 250px;
+      padding: 30px 20px 30px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .upcoming-section { background-color: #f8f9fe; border-radius: 16px; padding: 15px; text-align: center; }
+    .upcoming-title { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+    .upcoming-list { list-style: none; display: flex; flex-direction: column; max-height: 250px; overflow-y: auto; }
+
+    .upcoming-item {
+      padding: 10px 8px;
+      font-size: 14px;
+      border-bottom: 1px solid #e0e6ed;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .upcoming-item button {
+      background: none; border: none; color: #2ed573; cursor: pointer; font-size: 14px;
+    }
+
+    .add-btn {
+      background-color: var(--accent-green);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 20px;
+      font-size: 16px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(112, 161, 159, 0.3);
+      transition: transform 0.2s;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .add-btn:hover { transform: translateY(-2px); }
+
+    /* Generic Page Styling for Other Tabs */
+    .page-container { flex: 1; display: flex; flex-direction: column; gap: 15px; }
+    .page-title { font-size: 20px; font-weight: 600; color: var(--primary); margin-bottom: 10px; }
+    .card-box { background: #f8f9fe; padding: 20px; border-radius: 16px; margin-bottom: 15px; }
+
+    /* Notification Items */
+    .notif-item { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
+    .notif-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; }
+
+    /* Settings Form */
+    .setting-group { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+    .setting-group input[type="text"] { padding: 6px 12px; border-radius: 8px; border: 1px solid #ccc; font-family: 'Kanit'; }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Left -->
+    <aside class="sidebar">
+      <div>
+        <div class="brand">
+          <i class="fa-regular fa-bookmark"></i>
+          <span>My Homework</span>
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item active" data-tab="homework"><a><i class="fa-regular fa-calendar-check"></i> Homework</a></li>
+          <li class="nav-item" data-tab="calendar"><a><i class="fa-solid fa-list-check"></i> Calendar</a></li>
+          <li class="nav-item" data-tab="statistics"><a><i class="fa-chart-simple"></i> Statistics</a></li>
+          <li class="nav-item" data-tab="notification"><a><i class="fa-regular fa-bell"></i> Notification</a></li>
+          <li class="nav-item" data-tab="settings"><a><i class="fa-gear"></i> Settings</a></li>
+        </ul>
+      </div>
+
+      <div class="user-profile">
+        <i class="fa-solid fa-circle-user"></i>
+        <span id="user-display-name">User6767</span>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-area">
+
+      <!-- TAB 1: Homework (Dashboard Main) -->
+      <div id="tab-homework" class="tab-content active">
+        <main class="main-content">
+          <div class="greeting">
+            👋 Hello, <span class="user-greeting-name">User6767</span>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card purple">
+              <div class="stat-title">การบ้านทั้งหมด</div>
+              <div class="stat-number" id="total-tasks">0</div>
+              <div class="stat-unit">งาน</div>
+            </div>
+            <div class="stat-card green">
+              <div class="stat-title">งานที่เสร็จแล้ว</div>
+              <div class="stat-number" id="completed-tasks">0</div>
+              <div class="stat-unit">งาน</div>
+            </div>
+          </div>
+
+          <div class="progress-card">
+            <div class="stat-title">ความคืบหน้า</div>
+            <div class="progress-percentage" id="progress-text">0 %</div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="overdue-card">
+            <div class="stat-title">งานที่เลยกำหนดส่ง</div>
+            <div id="overdue-list-container">
+              <!-- Render Overdue tasks -->
+            </div>
+          </div>
+        </main>
+
+        <aside class="right-panel">
+          <div class="upcoming-section">
+            <div class="upcoming-title">งานที่ต้องทำ</div>
+            <ul class="upcoming-list" id="upcoming-list">
+              <!-- Render pending tasks -->
+            </ul>
+          </div>
+          <div>
+            <button class="add-btn" id="add-work-btn">
+              <i class="fa-solid fa-plus"></i> Add work
+            </button>
+          </div>
+        </aside>
+      </div>
+
+      <!-- TAB 2: Calendar -->
+      <div id="tab-calendar" class="tab-content">
+        <div class="page-container">
+          <div class="page-title"><i class="fa-solid fa-calendar-days"></i> ตารางการบ้านประจำสัปดาห์</div>
+          <div class="card-box">
+            <p style="margin-bottom: 10px; color: var(--text-gray);">รายการงานตามวันที่ส่ง:</p>
+            <div id="calendar-schedule"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: Statistics -->
+      <div id="tab-statistics" class="tab-content">
+        <div class="page-container">
+          <div class="page-title"><i class="fa-solid fa-chart-pie"></i> สถิติการส่งงาน</div>
+          <div class="card-box" style="text-align: center; padding: 40px 20px;">
+            <h3 style="font-size: 32px; color: var(--primary);" id="stat-ratio-text">0/0</h3>
+            <p style="color: var(--text-gray); margin-top: 5px;">อัตราส่วนงานที่ทำเสร็จสมบูรณ์</p>
+            <div style="margin-top: 20px; font-size: 14px; color: #2ed573;" id="stat-efficiency">
+              ประสิทธิภาพการทำงาน: 0%
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: Notification -->
+      <div id="tab-notification" class="tab-content">
+        <div class="page-container">
+          <div class="page-title"><i class="fa-regular fa-bell"></i> การแจ้งเตือน</div>
+          <div class="card-box" id="notification-box">
+            <!-- Dynamic Notifications -->
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: Settings -->
+      <div id="tab-settings" class="tab-content">
+        <div class="page-container">
+          <div class="page-title"><i class="fa-solid fa-gear"></i> ตั้งค่าระบบ</div>
+          <div class="card-box">
+            <div class="setting-group">
+              <span>ชื่อผู้ใช้งาน</span>
+              <input type="text" id="username-input" value="User6767">
+            </div>
+            <div class="setting-group">
+              <span>การแจ้งเตือนเตือนงานค้าง</span>
+              <input type="checkbox" checked>
+            </div>
+            <button class="add-btn" id="save-settings-btn" style="margin-top: 20px; width: auto; padding: 8px 25px;">บันทึกตั้งค่า</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // --- Initial State & Storage ---
+    let defaultTasks = [
+      { id: 1, name: 'คณิตศาสตร์', done: false, overdue: false },
+      { id: 2, name: 'วิทยาศาสตร์', done: false, overdue: false },
+      { id: 3, name: 'ภาษาไทย', done: false, overdue: false },
+      { id: 4, name: 'สังคมศึกษา (ใบงาน)', done: false, overdue: true, daysOverdue: 2 },
+      { id: 5, name: 'ภาษาอังกฤษ', done: true, overdue: false },
+      { id: 6, name: 'ประวัติศาสตร์', done: true, overdue: false }
+    ];
+
+    let tasks = JSON.parse(localStorage.getItem('my_tasks')) || defaultTasks;
+    let username = localStorage.getItem('my_username') || 'User6767';
+
+    // --- Tab Navigation ---
+    const navItems = document.querySelectorAll('.nav-item');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        navItems.forEach(nav => nav.classList.remove('active'));
+        tabContents.forEach(tab => tab.classList.remove('active'));
+
+        item.classList.add('active');
+        const targetTab = item.getAttribute('data-tab');
+        document.getElementById(`tab-${targetTab}`).classList.add('active');
+      });
+    });
+
+    // --- Render Functions ---
+    function renderApp() {
+      // Update User Name
+      document.getElementById('user-display-name').textContent = username;
+      document.querySelectorAll('.user-greeting-name').forEach(el => el.textContent = username);
+      document.getElementById('username-input').value = username;
+
+      // Stats Calculation
+      const total = tasks.length;
+      const completed = tasks.filter(t => t.done).length;
+      const progressPercent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+      document.getElementById('total-tasks').textContent = total;
+      document.getElementById('completed-tasks').textContent = completed;
+      document.getElementById('progress-text').textContent = `${progressPercent} %`;
+      document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+
+      // Render Pending Tasks Side Bar
+      const upcomingList = document.getElementById('upcoming-list');
+      upcomingList.innerHTML = '';
+      const pendingTasks = tasks.filter(t => !t.done && !t.overdue);
+
+      if(pendingTasks.length === 0) {
+        upcomingList.innerHTML = '<li class="upcoming-item" style="justify-content:center; color:#ccc;">ไม่มีงานค้าง</li>';
+      } else {
+        pendingTasks.forEach(task => {
+          const li = document.createElement('li');
+          li.className = 'upcoming-item';
+          li.innerHTML = `
+            <span>${task.name}</span>
+            <button onclick="markAsDone(${task.id})" title="ทํางานเสร็จแล้ว"><i class="fa-solid fa-circle-check"></i></button>
+          `;
+          upcomingList.appendChild(li);
+        });
+      }
+
+      // Render Overdue Tasks Card
+      const overdueContainer = document.getElementById('overdue-list-container');
+      overdueContainer.innerHTML = '';
+      const overdueTasks = tasks.filter(t => !t.done && t.overdue);
+
+      if(overdueTasks.length === 0) {
+        overdueContainer.innerHTML = '<div style="font-size:12px; color:#aaa; margin-top:5px;">ไม่มีงานที่เลยกำหนด</div>';
+      } else {
+        overdueTasks.forEach(task => {
+          const div = document.createElement('div');
+          div.className = 'overdue-item';
+          div.innerHTML = `
+            <div style="display:flex; align-items:center; gap:10px;">
+              <i class="fa-regular fa-file-lines" style="font-size: 20px; color: #555;"></i>
+              <div>
+                <div style="font-weight: 600; font-size: 13px;">${task.name}</div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="overdue-tag">เลยกำหนด ${task.daysOverdue || 1} วัน</span>
+              <button onclick="markAsDone(${task.id})" style="border:none; background:none; color:#2ed573; cursor:pointer;"><i class="fa-solid fa-circle-check"></i></button>
+            </div>
+          `;
+          overdueContainer.appendChild(div);
+        });
+      }
+
+      // Render Calendar View
+      const calSchedule = document.getElementById('calendar-schedule');
+      calSchedule.innerHTML = tasks.map(t => `
+        <div style="padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+          <span>${t.name}</span>
+          <span style="font-size: 12px; color: ${t.done ? '#2ed573' : (t.overdue ? 'var(--danger)' : '#ffa502')}">
+            ${t.done ? '✔ เสร็จแล้ว' : (t.overdue ? '✘ เลยกำหนด' : '⏳ รอดำเนินการ')}
+          </span>
+        </div>
+      `).join('');
+
+      // Render Statistics View
+      document.getElementById('stat-ratio-text').textContent = `${completed}/${total}`;
+      document.getElementById('stat-efficiency').textContent = `ประสิทธิภาพการทำงาน: ${progressPercent}%`;
+
+      // Render Notifications
+      const notifBox = document.getElementById('notification-box');
+      notifBox.innerHTML = `
+        <div class="notif-item">
+          <div class="notif-icon"><i class="fa-solid fa-exclamation"></i></div>
+          <div>
+            <div style="font-size:14px; font-weight:600;">งานที่เลยกำหนด</div>
+            <div style="font-size:12px; color:var(--text-gray);">คุณมีงานที่เลยกำหนดส่ง ${overdueTasks.length} รายการ</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon"><i class="fa-solid fa-list"></i></div>
+          <div>
+            <div style="font-size:14px; font-weight:600;">งานค้างคงเหลือ</div>
+            <div style="font-size:12px; color:var(--text-gray);">มีงานที่ต้องทำทั้งหมด ${pendingTasks.length} รายการ</div>
+          </div>
+        </div>
+      `;
+
+      // Save to LocalStorage
+      localStorage.setItem('my_tasks', JSON.stringify(tasks));
+      localStorage.setItem('my_username', username);
+    }
+
+    // --- Actions ---
+    function markAsDone(id) {
+      tasks = tasks.map(t => t.id === id ? { ...t, done: true, overdue: false } : t);
+      renderApp();
+    }
+
+    document.getElementById('add-work-btn').addEventListener('click', () => {
+      const subject = prompt('กรอกชื่อการบ้าน/งานที่ต้องการเพิ่ม:');
+      if (subject && subject.trim() !== '') {
+        tasks.push({
+          id: Date.now(),
+          name: subject.trim(),
+          done: false,
+          overdue: false
+        });
+        renderApp();
+      }
+    });
+
+    document.getElementById('save-settings-btn').addEventListener('click', () => {
+      const inputVal = document.getElementById('username-input').value;
+      if(inputVal.trim() !== '') {
+        username = inputVal.trim();
+        renderApp();
+        alert('บันทึกข้อมูลสำเร็จ!');
+      }
+    });
+
+    // Initial Load
+    renderApp();
+  </script>
+</body>
+</html>

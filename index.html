@@ -1,537 +1,1108 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Homework</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <style>
-    :root {
-      --bg-main: #f4f5fa;
-      --sidebar-bg: #f8f9fe;
-      --primary: #6c5ce7;
-      --primary-light: #e0dcfc;
-      --accent-green: #70a19f;
-      --card-purple: #f3f0ff;
-      --card-green: #f0f7f4;
-      --card-red: #fff0f0;
-      --text-dark: #2d3436;
-      --text-gray: #636e72;
-      --danger: #ff7675;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Homework Dashboard - Ultimate Edition</title>
+<!-- Google Fonts & FontAwesome -->
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Kanit', sans-serif; }
+<style>
+:root {
+--bg-color: #f7f7fc;
+--card-bg: #ffffff;
+--text-color: #1e1b4b;
+--sidebar-bg: #f1f2fa;
+--primary-color: #8c62ec;
+--primary-hover: #7242e3;
+--font-family: 'Kanit', sans-serif;
+--font-scale: 16px;
+}
 
-    body {
-      background-color: var(--bg-main);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      color: var(--text-dark);
-    }
+body.dark-mode {
+--bg-color: #0f172a;
+--card-bg: #1e293b;
+--text-color: #f8fafc;
+--sidebar-bg: #1e293b;
+}
 
-    .app-container {
-      width: 1000px;
-      height: 600px;
-      background: #ffffff;
-      border-radius: 20px;
-      display: flex;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      overflow: hidden;
-      position: relative;
-    }
+/* Color Themes */
+body.theme-blue { --primary-color: #0284c7; --primary-hover: #0369a1; }
+body.theme-green { --primary-color: #059669; --primary-hover: #047857; }
+body.theme-orange { --primary-color: #ea580c; --primary-hover: #c2410c; }
 
-    /* Sidebar */
-    .sidebar {
-      width: 230px;
-      background-color: var(--sidebar-bg);
-      padding: 25px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+* {
+margin: 0; padding: 0; box-sizing: border-box;
+font-family: var(--font-family);
+transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+}
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--primary);
-      margin-bottom: 30px;
-    }
+html { font-size: var(--font-scale); }
 
-    .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+body {
+background-color: var(--bg-color);
+color: var(--text-color);
+min-height: 100vh;
+display: flex; justify-content: center; align-items: center;
+overflow-x: hidden;
+}
 
-    .nav-item a {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 10px 15px;
-      text-decoration: none;
-      color: var(--text-gray);
-      font-weight: 500;
-      border-radius: 12px;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
+/* 1. AUTH STYLES */
+.auth-container {
+width: 100%; min-height: 100vh; display: flex; justify-content: flex-end; align-items: center;
+padding: 2rem 5%; position: relative; background: #ffffff; overflow: hidden;
+}
+.bg-shape-top-left {
+position: absolute; top: -100px; left: -100px; width: 500px; height: 500px;
+background: repeating-radial-gradient(circle at 20% 20%, transparent 0, transparent 20px, rgba(134, 239, 172, 0.4) 20px, rgba(134, 239, 172, 0.4) 30px, rgba(147, 197, 253, 0.4) 30px, rgba(147, 197, 253, 0.4) 45px);
+border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; z-index: 1;
+}
+.bg-shape-bottom-right {
+position: absolute; bottom: -150px; right: -50px; width: 550px; height: 550px;
+background: repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 25px, rgba(217, 119, 6, 0.25) 25px, rgba(217, 119, 6, 0.25) 40px, rgba(147, 51, 234, 0.25) 40px, rgba(147, 51, 234, 0.25) 60px);
+border-radius: 50%; z-index: 1;
+}
+.auth-card {
+background-color: var(--primary-color);
+width: 100%; max-width: 480px; padding: 2.5rem; border-radius: 28px;
+box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); z-index: 10; color: #ffffff;
+}
+.auth-card h2 { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 0.2rem; color: #ffffff; }
+.auth-card p.subtitle { text-align: center; font-size: 0.9rem; margin-bottom: 1.5rem; color: #f1f5f9; }
+.input-group { margin-bottom: 0.8rem; }
+.input-group input { width: 100%; padding: 0.8rem 1.2rem; border: none; border-radius: 12px; font-size: 1rem; outline: none; background: #ffffff; color: #000; }
+.auth-btn { background-color: #ffffff; color: #000; border: none; padding: 0.7rem 2.5rem; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; display: block; margin: 1rem auto 0; width: 100%; }
+.auth-btn:hover { background-color: #f1f5f9; }
+.auth-switch { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #ffffff; }
+.auth-switch a { color: #ffffff; font-weight: 600; text-decoration: underline; cursor: pointer; }
 
-    .nav-item.active a, .nav-item a:hover {
-      background-color: #e8e5ff;
-      color: var(--primary);
-    }
+/* 2. DASHBOARD LAYOUT */
+.dashboard-container { display: none; width: 100vw; height: 100vh; background-color: var(--bg-color); }
+.sidebar {
+width: 260px; background-color: var(--sidebar-bg); display: flex; flex-direction: column; justify-content: space-between; padding: 2rem 1.5rem; border-right: 1px solid rgba(0,0,0,0.05);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; font-weight: 700; color: var(--primary-color); margin-bottom: 2rem; }
+.nav-menu { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.nav-item { display: flex; align-items: center; gap: 12px; padding: 0.8rem 1.2rem; border-radius: 16px; color: var(--text-color); opacity: 0.8; font-weight: 500; cursor: pointer; text-decoration: none; }
+.nav-item:hover, .nav-item.active { background-color: var(--primary-color); color: #ffffff; opacity: 1; font-weight: 600; }
+.nav-item i { font-size: 1.1rem; width: 20px; text-align: center; }
 
-    .nav-item i { font-size: 18px; width: 20px; }
+.user-profile { display: flex; align-items: center; gap: 12px; padding: 0.6rem 0.8rem; cursor: pointer; border-radius: 16px; background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(0, 0, 0, 0.05); }
+.user-profile:hover { background-color: rgba(255, 255, 255, 0.8); }
+.user-avatar { width: 40px; height: 40px; background-color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; }
+.user-name { font-weight: 600; color: var(--primary-color); font-size: 0.95rem; }
 
-    .user-profile {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding-top: 20px;
-      color: #a29bfe;
-      font-weight: 600;
-    }
+.main-content { flex: 1; padding: 2rem 2.5rem; overflow-y: auto; position: relative; }
+.header-title { font-size: 1.6rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid rgba(0,0,0,0.05); padding-bottom: 0.8rem; }
 
-    .user-profile i { font-size: 32px; color: #ccc; }
+/* Dashboard Grid Layout */
+.dashboard-grid { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; }
+.left-panel { display: flex; flex-direction: column; gap: 1.2rem; }
 
-    /* Main Area & Tab Switching */
-    .main-area { flex: 1; display: flex; position: relative; }
-    
-    .tab-content {
-      width: 100%;
-      height: 100%;
-      display: none;
-      padding: 30px;
-      overflow-y: auto;
-    }
+.stat-card { background: var(--card-bg); padding: 1.2rem; border-radius: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); }
+.stat-card .number { font-size: 2.2rem; font-weight: 700; color: var(--primary-color); }
+.top-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-    .tab-content.active { display: flex; }
+.progress-card { background: var(--card-bg); padding: 1.2rem; border-radius: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); }
+.progress-bar-bg { width: 100%; height: 25px; background-color: rgba(0,0,0,0.06); border-radius: 20px; overflow: hidden; margin-top: 10px; }
+.progress-bar-fill { height: 100%; width: 0%; background-color: var(--primary-color); border-radius: 20px; transition: width 0.5s ease; }
 
-    /* Dashboard Layout Inside Homework Tab */
-    #tab-homework { gap: 20px; padding: 0; }
+/* Subject Summary Side Box */
+.subject-summary-card { background: var(--card-bg); padding: 1.2rem; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+.subject-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.subject-item-pill { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.9rem; background: var(--bg-color); border-radius: 12px; font-size: 0.88rem; }
+.subject-item-pill span.badge { background: var(--primary-color); color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; }
 
-    .main-content {
-      flex: 1;
-      padding: 30px 15px 30px 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      overflow-y: auto;
-    }
+/* Homework Cards Main Section */
+.homework-section { display: flex; flex-direction: column; gap: 1.2rem; }
 
-    .greeting {
-      font-size: 22px;
-      font-weight: 500;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #e2e8f0;
-      margin-bottom: 5px;
-    }
+/* Search & Filters Bar */
+.filter-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.search-box { flex: 1; position: relative; min-width: 200px; }
+.search-box input { width: 100%; padding: 0.7rem 1rem 0.7rem 2.4rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 14px; background: var(--card-bg); color: var(--text-color); outline: none; font-size: 0.9rem; }
+.search-box i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); opacity: 0.5; }
 
-    /* Cards Grid */
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.filter-btn-group { display: flex; gap: 6px; background: var(--card-bg); padding: 4px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.05); }
+.filter-btn { border: none; background: transparent; padding: 0.5rem 0.9rem; border-radius: 10px; font-size: 0.85rem; font-weight: 500; color: var(--text-color); opacity: 0.7; cursor: pointer; }
+.filter-btn.active { background: var(--primary-color); color: #fff; opacity: 1; font-weight: 600; }
 
-    .stat-card { padding: 15px 20px; border-radius: 16px; text-align: center; }
-    .stat-card.purple { background-color: var(--card-purple); }
-    .stat-card.green { background-color: var(--card-green); }
+/* Rich Task Card Item */
+.task-grid-container { display: flex; flex-direction: column; gap: 12px; max-height: calc(100vh - 250px); overflow-y: auto; padding-right: 4px; }
 
-    .stat-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
-    .stat-number { font-size: 36px; font-weight: 600; line-height: 1; }
-    .stat-unit { font-size: 12px; color: var(--text-gray); margin-top: 5px; }
+.rich-task-card {
+background: var(--card-bg); padding: 1.2rem; border-radius: 18px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+display: flex; flex-direction: column; gap: 10px; position: relative; border-left: 6px solid var(--primary-color);
+transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;
+}
+.rich-task-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+.rich-task-card.completed { border-left-color: #10b981; opacity: 0.75; }
+.rich-task-card.completed .task-body-title { text-decoration: line-through; }
 
-    .progress-card { background-color: var(--card-purple); padding: 15px 20px; border-radius: 16px; }
-    .progress-percentage { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+.task-header-row { display: flex; justify-content: space-between; align-items: center; }
+.subject-tag { background: rgba(140, 98, 236, 0.12); color: var(--primary-color); padding: 4px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; }
+.status-tag { font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+.status-tag.pending { background: #fef3c7; color: #d97706; }
+.status-tag.done { background: #d1fae5; color: #059669; }
 
-    .progress-bar-bg {
-      width: 100%;
-      height: 28px;
-      background-color: #dcd6f7;
-      border-radius: 14px;
-      overflow: hidden;
-    }
+.task-body-title { font-size: 1.1rem; font-weight: 600; color: var(--text-color); margin-top: 2px; }
+.task-body-desc { font-size: 0.88rem; opacity: 0.8; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; }
 
-    .progress-bar-fill {
-      height: 100%;
-      width: 0%;
-      background-color: #7c6cf0;
-      border-radius: 14px;
-      transition: width 0.3s ease;
-    }
+.task-footer-row { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; padding-top: 8px; border-top: 1px dashed rgba(0,0,0,0.08); font-size: 0.82rem; opacity: 0.75; }
+.due-date-text { display: flex; align-items: center; gap: 6px; }
 
-    .overdue-card { background-color: var(--card-red); padding: 15px 20px; border-radius: 16px; }
+.add-work-btn { background-color: var(--primary-color); color: #ffffff; border: none; width: 100%; padding: 0.9rem; border-radius: 16px; font-size: 1.05rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(140, 98, 236, 0.3); }
 
-    .overdue-item {
-      background-color: #ffffff;
-      padding: 10px 15px;
-      border-radius: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 8px;
-    }
+/* View Sections */
+.view-section { display: none; }
+.view-section.active-view { display: block; }
 
-    .overdue-tag { color: var(--danger); font-size: 12px; font-weight: 500; }
+/* 3. CALENDAR STYLES & QUICK ADD */
+.calendar-card { background: var(--card-bg); padding: 1.8rem; border-radius: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); }
+.calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.calendar-header button { background: var(--bg-color); border: 1px solid rgba(0,0,0,0.1); color: var(--text-color); padding: 0.5rem 1rem; border-radius: 10px; cursor: pointer; font-weight: 600; }
+.calendar-header button:hover { background: var(--primary-color); color: #fff; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; text-align: center; }
+.day-name { font-weight: 600; padding: 10px 0; opacity: 0.7; }
+.calendar-day { min-height: 100px; background: var(--bg-color); border-radius: 12px; padding: 8px; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; position: relative; cursor: pointer; border: 1px solid transparent; }
+.calendar-day:hover { border-color: var(--primary-color); background: rgba(140, 98, 236, 0.05); }
+.calendar-day.empty { background: transparent; cursor: default; border: none; }
+.calendar-day.today { border: 2px solid var(--primary-color); font-weight: bold; }
+.day-header { display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 4px; }
+.day-number { font-size: 0.9rem; font-weight: 600; }
+.day-add-btn { opacity: 0; font-size: 0.75rem; color: var(--primary-color); background: rgba(140, 98, 236, 0.15); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; }
+.calendar-day:hover .day-add-btn { opacity: 1; }
+.task-badge { background: var(--primary-color); color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 6px; margin-top: 2px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+.task-badge.done { background: #10b981; opacity: 0.7; text-decoration: line-through; }
 
-    /* Right Panel */
-    .right-panel {
-      width: 250px;
-      padding: 30px 20px 30px 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+/* 4. SETTINGS STYLES */
+.settings-nav { display: flex; gap: 10px; border-bottom: 2px solid rgba(0,0,0,0.05); margin-bottom: 1.5rem; padding-bottom: 0.5rem; }
+.settings-tab-btn { background: none; border: none; padding: 0.6rem 1.2rem; border-radius: 10px; font-size: 0.95rem; font-weight: 500; color: var(--text-color); opacity: 0.6; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.settings-tab-btn:hover, .settings-tab-btn.active { opacity: 1; background: var(--card-bg); color: var(--primary-color); font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.settings-panel { display: none; background: var(--card-bg); padding: 1.8rem; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+.settings-panel.active-panel { display: block; }
+.setting-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.setting-item:last-child { border-bottom: none; }
+.setting-info h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.2rem; }
+.setting-info p { font-size: 0.85rem; opacity: 0.7; }
+.setting-control input, .setting-control select, .setting-control textarea { padding: 0.6rem 1rem; border: 1px solid rgba(0,0,0,0.15); border-radius: 10px; background: var(--bg-color); color: var(--text-color); outline: none; font-size: 0.9rem; width: 240px; }
 
-    .upcoming-section { background-color: #f8f9fe; border-radius: 16px; padding: 15px; text-align: center; }
-    .upcoming-title { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
-    .upcoming-list { list-style: none; display: flex; flex-direction: column; max-height: 250px; overflow-y: auto; }
+/* Controls & Color Picker */
+.color-picker-group { display: flex; gap: 10px; }
+.color-circle { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s; }
+.color-circle:hover { transform: scale(1.15); }
+.color-circle.selected { border-color: var(--text-color); transform: scale(1.1); }
 
-    .upcoming-item {
-      padding: 10px 8px;
-      font-size: 14px;
-      border-bottom: 1px solid #e0e6ed;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+.switch { position: relative; display: inline-block; width: 48px; height: 24px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 34px; }
+.slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--primary-color); }
+input:checked + .slider:before { transform: translateX(24px); }
 
-    .upcoming-item button {
-      background: none; border: none; color: #2ed573; cursor: pointer; font-size: 14px;
-    }
+.btn-danger { background: #ef4444; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; font-weight: 500; }
+.btn-secondary { background: #64748b; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; font-weight: 500; }
+.btn-save-settings { background: var(--primary-color); color: white; border: none; padding: 0.7rem 1.8rem; border-radius: 12px; cursor: pointer; font-size: 1rem; font-weight: 600; margin-top: 1.5rem; }
 
-    .add-btn {
-      background-color: var(--accent-green);
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 20px;
-      font-size: 16px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(112, 161, 159, 0.3);
-      transition: transform 0.2s;
-      width: 100%;
-      margin-top: 15px;
-    }
+/* Modals */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
+.modal-content { background: var(--card-bg); padding: 2rem; border-radius: 20px; width: 90%; max-width: 480px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem; }
+.btn-cancel { background: #e2e8f0; border: none; padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; color: #333; }
 
-    .add-btn:hover { transform: translateY(-2px); }
-
-    /* Generic Page Styling for Other Tabs */
-    .page-container { flex: 1; display: flex; flex-direction: column; gap: 15px; }
-    .page-title { font-size: 20px; font-weight: 600; color: var(--primary); margin-bottom: 10px; }
-    .card-box { background: #f8f9fe; padding: 20px; border-radius: 16px; margin-bottom: 15px; }
-
-    /* Notification Items */
-    .notif-item { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
-    .notif-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; }
-
-    /* Settings Form */
-    .setting-group { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
-    .setting-group input[type="text"] { padding: 6px 12px; border-radius: 8px; border: 1px solid #ccc; font-family: 'Kanit'; }
-  </style>
+.detail-row { margin-bottom: 0.8rem; }
+.detail-row label { font-size: 0.85rem; opacity: 0.7; display: block; margin-bottom: 2px; }
+.detail-value { font-weight: 500; font-size: 1.05rem; }
+.detail-input { width: 100%; padding: 0.7rem 1rem; border: 1px solid rgba(0,0,0,0.15); border-radius: 10px; background: var(--bg-color); color: var(--text-color); }
+textarea.detail-input { resize: vertical; min-height: 80px; }
+</style>
 </head>
 <body>
 
-  <div class="app-container">
-    
-    <!-- Sidebar Left -->
-    <aside class="sidebar">
-      <div>
-        <div class="brand">
-          <i class="fa-regular fa-bookmark"></i>
-          <span>My Homework</span>
-        </div>
-        <ul class="nav-menu">
-          <li class="nav-item active" data-tab="homework"><a><i class="fa-regular fa-calendar-check"></i> Homework</a></li>
-          <li class="nav-item" data-tab="calendar"><a><i class="fa-solid fa-list-check"></i> Calendar</a></li>
-          <li class="nav-item" data-tab="statistics"><a><i class="fa-chart-simple"></i> Statistics</a></li>
-          <li class="nav-item" data-tab="notification"><a><i class="fa-regular fa-bell"></i> Notification</a></li>
-          <li class="nav-item" data-tab="settings"><a><i class="fa-gear"></i> Settings</a></li>
-        </ul>
-      </div>
+<!-- 1. AUTH PAGES -->
+<div id="authPage" class="auth-container">
+<div class="bg-shape-top-left"></div>
+<div class="bg-shape-bottom-right"></div>
 
-      <div class="user-profile">
-        <i class="fa-solid fa-circle-user"></i>
-        <span id="user-display-name">User6767</span>
-      </div>
-    </aside>
+<!-- LOGIN CARD -->
+<div id="loginCard" class="auth-card">
+<h2>Welcome Back</h2>
+<p class="subtitle">ระบบจัดการการบ้านส่วนบุคคล</p>
+<form onsubmit="handleLogin(event)">
+<div class="input-group">
+<input type="text" id="loginUsername" placeholder="ชื่อผู้ใช้..." value="User6767" required>
+</div>
+<div class="input-group">
+<input type="password" id="loginPassword" placeholder="รหัสผ่าน..." value="123456" required>
+</div>
+<button type="submit" class="auth-btn">เข้าสู่ระบบ</button>
+</form>
+<div class="auth-switch">
+ยังไม่มีบัญชีใช่ไหม? <a onclick="toggleAuthForm('register')">ลงทะเบียนที่นี่</a>
+</div>
+</div>
 
-    <!-- Main Content Area -->
-    <div class="main-area">
+<!-- REGISTER CARD -->
+<div id="registerCard" class="auth-card" style="display: none;">
+<h2>Create Account</h2>
+<p class="subtitle">สมัครสมาชิกเพื่อเริ่มต้นใช้งาน</p>
+<form onsubmit="handleRegister(event)">
+<div class="input-group">
+<input type="text" id="regUsername" placeholder="ชื่อผู้ใช้..." required>
+</div>
+<div class="input-group">
+<input type="password" id="regPassword" placeholder="รหัสผ่าน..." required>
+</div>
+<div class="input-group">
+<input type="text" id="regGrade" placeholder="ระดับชั้น (เช่น ม.4/1)..." required>
+</div>
+<div class="input-group">
+<input type="text" id="regStudentId" placeholder="รหัสนักเรียน...">
+</div>
+<div class="input-group">
+<input type="text" id="regSchool" placeholder="ชื่อโรงเรียน...">
+</div>
+<button type="submit" class="auth-btn">ลงทะเบียน</button>
+</form>
+<div class="auth-switch">
+มีบัญชีอยู่แล้ว? <a onclick="toggleAuthForm('login')">เข้าสู่ระบบ</a>
+</div>
+</div>
+</div>
 
-      <!-- TAB 1: Homework (Dashboard Main) -->
-      <div id="tab-homework" class="tab-content active">
-        <main class="main-content">
-          <div class="greeting">
-            👋 Hello, <span class="user-greeting-name">User6767</span>
-          </div>
+<!-- 2. MAIN DASHBOARD -->
+<div id="dashboardPage" class="dashboard-container">
+<!-- Sidebar -->
+<aside class="sidebar">
+<div>
+<div class="brand">
+<i class="fa-regular fa-bookmark"></i>
+<span>My Homework</span>
+</div>
+<ul class="nav-menu">
+<li><a href="#" class="nav-item active" onclick="switchTab(event, 'homework')"><i class="fa-regular fa-calendar-check"></i><span>Homework</span></a></li>
+<li><a href="#" class="nav-item" onclick="switchTab(event, 'calendar')"><i class="fa-regular fa-calendar-days"></i><span>Calendar</span></a></li>
+<li><a href="#" class="nav-item" onclick="switchTab(event, 'statistics')"><i class="fa-solid fa-chart-column"></i><span>Statistics</span></a></li>
+<li><a href="#" class="nav-item" onclick="switchTab(event, 'settings')"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>
+</ul>
+</div>
+<div class="user-profile" onclick="openProfileModal()">
+<div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+<div>
+<div class="user-name" id="displayUsername">User6767</div>
+<div style="font-size: 0.75rem; opacity: 0.7;">ดูรายละเอียดโปรไฟล์</div>
+</div>
+</div>
+</aside>
 
-          <div class="stats-grid">
-            <div class="stat-card purple">
-              <div class="stat-title">การบ้านทั้งหมด</div>
-              <div class="stat-number" id="total-tasks">0</div>
-              <div class="stat-unit">งาน</div>
-            </div>
-            <div class="stat-card green">
-              <div class="stat-title">งานที่เสร็จแล้ว</div>
-              <div class="stat-number" id="completed-tasks">0</div>
-              <div class="stat-unit">งาน</div>
-            </div>
-          </div>
+<!-- Main Content -->
+<main class="main-content">
+<h1 class="header-title">
+<span>สวัสดี, <span id="welcomeUser">User6767</span> (<span id="welcomeGrade">ม.4/1</span>)</span>
+</h1>
 
-          <div class="progress-card">
-            <div class="stat-title">ความคืบหน้า</div>
-            <div class="progress-percentage" id="progress-text">0 %</div>
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" id="progress-fill"></div>
-            </div>
-          </div>
+<!-- TAB 1: HOMEWORK MAIN (ENHANCED VIEW) -->
+<div id="view-homework" class="view-section active-view">
+<div class="dashboard-grid">
 
-          <div class="overdue-card">
-            <div class="stat-title">งานที่เลยกำหนดส่ง</div>
-            <div id="overdue-list-container">
-              <!-- Render Overdue tasks -->
-            </div>
-          </div>
-        </main>
+<!-- LEFT COLUMN: STATS & SUBJECT OVERVIEW -->
+<div class="left-panel">
+<div class="top-cards">
+<div class="stat-card">
+<h4>งานทั้งหมด</h4>
+<div class="number" id="totalCount">0</div>
+</div>
+<div class="stat-card">
+<h4>เสร็จสิ้น</h4>
+<div class="number" id="completedCount">0</div>
+</div>
+</div>
 
-        <aside class="right-panel">
-          <div class="upcoming-section">
-            <div class="upcoming-title">งานที่ต้องทำ</div>
-            <ul class="upcoming-list" id="upcoming-list">
-              <!-- Render pending tasks -->
-            </ul>
-          </div>
-          <div>
-            <button class="add-btn" id="add-work-btn">
-              <i class="fa-solid fa-plus"></i> Add work
-            </button>
-          </div>
-        </aside>
-      </div>
+<div class="progress-card">
+<h4>ความคืบหน้าภาพรวม (<span id="progressPercent">0%</span>)</h4>
+<div class="progress-bar-bg">
+<div class="progress-bar-fill" id="progressBarFill"></div>
+</div>
+</div>
 
-      <!-- TAB 2: Calendar -->
-      <div id="tab-calendar" class="tab-content">
-        <div class="page-container">
-          <div class="page-title"><i class="fa-solid fa-calendar-days"></i> ตารางการบ้านประจำสัปดาห์</div>
-          <div class="card-box">
-            <p style="margin-bottom: 10px; color: var(--text-gray);">รายการงานตามวันที่ส่ง:</p>
-            <div id="calendar-schedule"></div>
-          </div>
-        </div>
-      </div>
+<!-- Subject Overview Cards -->
+<div class="subject-summary-card">
+<h4>งานค้างแยกตามรายวิชา</h4>
+<ul class="subject-list" id="subjectSummaryContainer">
+<!-- Dynamic subjects pills -->
+</ul>
+</div>
 
-      <!-- TAB 3: Statistics -->
-      <div id="tab-statistics" class="tab-content">
-        <div class="page-container">
-          <div class="page-title"><i class="fa-solid fa-chart-pie"></i> สถิติการส่งงาน</div>
-          <div class="card-box" style="text-align: center; padding: 40px 20px;">
-            <h3 style="font-size: 32px; color: var(--primary);" id="stat-ratio-text">0/0</h3>
-            <p style="color: var(--text-gray); margin-top: 5px;">อัตราส่วนงานที่ทำเสร็จสมบูรณ์</p>
-            <div style="margin-top: 20px; font-size: 14px; color: #2ed573;" id="stat-efficiency">
-              ประสิทธิภาพการทำงาน: 0%
-            </div>
-          </div>
-        </div>
-      </div>
+<button class="add-work-btn" onclick="openAddModal()"><i class="fa-solid fa-plus"></i> เพิ่มการบ้านใหม่</button>
+</div>
 
-      <!-- TAB 4: Notification -->
-      <div id="tab-notification" class="tab-content">
-        <div class="page-container">
-          <div class="page-title"><i class="fa-regular fa-bell"></i> การแจ้งเตือน</div>
-          <div class="card-box" id="notification-box">
-            <!-- Dynamic Notifications -->
-          </div>
-        </div>
-      </div>
+<!-- RIGHT COLUMN: DETAILED HOMEWORK CARDS LIST -->
+<div class="homework-section">
+<!-- Filters & Search Bar -->
+<div class="filter-bar">
+<div class="search-box">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input type="text" id="searchInput" placeholder="ค้นหางาน หรือวิชา..." oninput="renderTasks()">
+</div>
+<div class="filter-btn-group">
+<button class="filter-btn active" onclick="setFilter('all', this)">ทั้งหมด</button>
+<button class="filter-btn" onclick="setFilter('pending', this)">รอดำเนินการ</button>
+<button class="filter-btn" onclick="setFilter('completed', this)">เสร็จสิ้น</button>
+</div>
+</div>
 
-      <!-- TAB 5: Settings -->
-      <div id="tab-settings" class="tab-content">
-        <div class="page-container">
-          <div class="page-title"><i class="fa-solid fa-gear"></i> ตั้งค่าระบบ</div>
-          <div class="card-box">
-            <div class="setting-group">
-              <span>ชื่อผู้ใช้งาน</span>
-              <input type="text" id="username-input" value="User6767">
-            </div>
-            <div class="setting-group">
-              <span>การแจ้งเตือนเตือนงานค้าง</span>
-              <input type="checkbox" checked>
-            </div>
-            <button class="add-btn" id="save-settings-btn" style="margin-top: 20px; width: auto; padding: 8px 25px;">บันทึกตั้งค่า</button>
-          </div>
-        </div>
-      </div>
+<!-- Rich Cards List Container -->
+<div class="task-grid-container" id="taskListContainer">
+<!-- Tasks cards dynamically rendered here -->
+</div>
+</div>
 
-    </div>
-  </div>
+</div>
+</div>
 
-  <script>
-    // --- Initial State & Storage ---
-    let defaultTasks = [
-      { id: 1, name: 'คณิตศาสตร์', done: false, overdue: false },
-      { id: 2, name: 'วิทยาศาสตร์', done: false, overdue: false },
-      { id: 3, name: 'ภาษาไทย', done: false, overdue: false },
-      { id: 4, name: 'สังคมศึกษา (ใบงาน)', done: false, overdue: true, daysOverdue: 2 },
-      { id: 5, name: 'ภาษาอังกฤษ', done: true, overdue: false },
-      { id: 6, name: 'ประวัติศาสตร์', done: true, overdue: false }
-    ];
+<!-- TAB 2: CALENDAR PAGE -->
+<div id="view-calendar" class="view-section">
+<div class="calendar-card">
+<div class="calendar-header">
+<button onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i> เดือนก่อนหน้า</button>
+<h2 id="calendarMonthYear"></h2>
+<button onclick="changeMonth(1)">เดือนถัดไป <i class="fa-solid fa-chevron-right"></i></button>
+</div>
+<div class="calendar-grid">
+<div class="day-name">อา.</div>
+<div class="day-name">จ.</div>
+<div class="day-name">อ.</div>
+<div class="day-name">พ.</div>
+<div class="day-name">พฤ.</div>
+<div class="day-name">ศ.</div>
+<div class="day-name">ส.</div>
+</div>
+<div class="calendar-grid" id="calendarDaysContainer" style="margin-top: 10px;"></div>
+</div>
+</div>
 
-    let tasks = JSON.parse(localStorage.getItem('my_tasks')) || defaultTasks;
-    let username = localStorage.getItem('my_username') || 'User6767';
+<!-- TAB 3: STATISTICS -->
+<div id="view-statistics" class="view-section">
+<h2>สถิติการส่งงานแยกตามวิชา</h2>
+<div id="statsDetailContainer" style="margin-top: 1.5rem; display: grid; gap: 1rem;"></div>
+</div>
 
-    // --- Tab Navigation ---
-    const navItems = document.querySelectorAll('.nav-item');
-    const tabContents = document.querySelectorAll('.tab-content');
+<!-- TAB 4: DETAILED SETTINGS -->
+<div id="view-settings" class="view-section">
+<h2 style="margin-bottom: 1.2rem;">ตั้งค่าระบบอย่างละเอียด (Advanced Settings)</h2>
 
-    navItems.forEach(item => {
-      item.addEventListener('click', () => {
-        navItems.forEach(nav => nav.classList.remove('active'));
-        tabContents.forEach(tab => tab.classList.remove('active'));
+<div class="settings-nav">
+<button class="settings-tab-btn active" onclick="switchSettingsPanel('panel-profile', event)"><i class="fa-regular fa-id-card"></i> ข้อมูลส่วนตัว</button>
+<button class="settings-tab-btn" onclick="switchSettingsPanel('panel-appearance', event)"><i class="fa-solid fa-palette"></i> การแสดงผล & ธีม</button>
+<button class="settings-tab-btn" onclick="switchSettingsPanel('panel-notifications', event)"><i class="fa-regular fa-bell"></i> การแจ้งเตือน</button>
+<button class="settings-tab-btn" onclick="switchSettingsPanel('panel-security', event)"><i class="fa-solid fa-shield-halved"></i> ความปลอดภัย & ข้อมูล</button>
+</div>
 
-        item.classList.add('active');
-        const targetTab = item.getAttribute('data-tab');
-        document.getElementById(`tab-${targetTab}`).classList.add('active');
-      });
-    });
+<div id="panel-profile" class="settings-panel active-panel">
+<div class="setting-item">
+<div class="setting-info">
+<h4>ชื่อผู้ใช้งาน (Display Name)</h4>
+<p>ชื่อที่จะแสดงในหน้า Dashboard และการทักทาย</p>
+</div>
+<div class="setting-control">
+<input type="text" id="setProfileName">
+</div>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>รหัสนักเรียน (Student ID)</h4>
+<p>ใช้ในการอ้างอิงข้อมูลส่วนตัว</p>
+</div>
+<div class="setting-control">
+<input type="text" id="setStudentId">
+</div>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>ระดับชั้นเรียน (Grade / Class)</h4>
+<p>เช่น ม.4/1, ม.5/2</p>
+</div>
+<div class="setting-control">
+<input type="text" id="setGrade">
+</div>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>โรงเรียน / สถานศึกษา</h4>
+<p>สังกัดสถานศึกษาปัจจุบัน</p>
+</div>
+<div class="setting-control">
+<input type="text" id="setSchool">
+</div>
+</div>
+<button class="btn-save-settings" onclick="saveProfileSettings()">บันทึกข้อมูลส่วนตัว</button>
+</div>
 
-    // --- Render Functions ---
-    function renderApp() {
-      // Update User Name
-      document.getElementById('user-display-name').textContent = username;
-      document.querySelectorAll('.user-greeting-name').forEach(el => el.textContent = username);
-      document.getElementById('username-input').value = username;
+<div id="panel-appearance" class="settings-panel">
+<div class="setting-item">
+<div class="setting-info">
+<h4>โทนสีหลักของระบบ (Theme Accent Color)</h4>
+<p>เลือกสีไฮไลต์ประจำโปรแกรมที่คุณชอบ</p>
+</div>
+<div class="color-picker-group">
+<div class="color-circle selected" style="background: #8c62ec;" onclick="changeThemeColor('purple', this)"></div>
+<div class="color-circle" style="background: #0284c7;" onclick="changeThemeColor('blue', this)"></div>
+<div class="color-circle" style="background: #059669;" onclick="changeThemeColor('green', this)"></div>
+<div class="color-circle" style="background: #ea580c;" onclick="changeThemeColor('orange', this)"></div>
+</div>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>โหมดมืด (Dark Mode)</h4>
+<p>ปรับสีพื้นหลังเป็นโทนเข้ม ถนอมสายตาเวลากลางคืน</p>
+</div>
+<label class="switch">
+<input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+<span class="slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>รูปแบบฟอนต์ (Font Family)</h4>
+<p>เลือกฟอนต์ภาษาไทยที่ต้องการใช้งาน</p>
+</div>
+<div class="setting-control">
+<select id="fontSelect" onchange="changeFontFamily(this.value)">
+<option value="'Kanit', sans-serif">Kanit (ทันสมัย สวยงาม)</option>
+<option value="'Prompt', sans-serif">Prompt (อ่านง่าย โค้งมน)</option>
+<option value="'Sarabun', sans-serif">Sarabun (ทางการ ชัดเจน)</option>
+</select>
+</div>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>ขนาดตัวอักษร (Font Scale)</h4>
+<p>ปรับขนาดตัวอักษรของทั้งเว็บไซต์</p>
+</div>
+<div class="setting-control">
+<select id="fontScaleSelect" onchange="changeFontScale(this.value)">
+<option value="14px">เล็ก (Small)</option>
+<option value="16px" selected>ปกติ (Normal)</option>
+<option value="18px">ใหญ่ (Large)</option>
+</select>
+</div>
+</div>
+</div>
 
-      // Stats Calculation
-      const total = tasks.length;
-      const completed = tasks.filter(t => t.done).length;
-      const progressPercent = total === 0 ? 0 : Math.round((completed / total) * 100);
+<div id="panel-notifications" class="settings-panel">
+<div class="setting-item">
+<div class="setting-info">
+<h4>แจ้งเตือนงานที่เลยกำหนด (Overdue Alert)</h4>
+<p>แสดงการแจ้งเตือนสีแดงเมื่องานเกินวันส่ง</p>
+</div>
+<label class="switch">
+<input type="checkbox" checked>
+<span class="slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>เตือนล่วงหน้า 1 วัน (1-Day Reminder)</h4>
+<p>แจ้งเตือนเตือนงานที่จะถึงกำหนดส่งในวันพรุ่งนี้</p>
+</div>
+<label class="switch">
+<input type="checkbox" checked>
+<span class="slider"></span>
+</label>
+</div>
+</div>
 
-      document.getElementById('total-tasks').textContent = total;
-      document.getElementById('completed-tasks').textContent = completed;
-      document.getElementById('progress-text').textContent = `${progressPercent} %`;
-      document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+<div id="panel-security" class="settings-panel">
+<div class="setting-item">
+<div class="setting-info">
+<h4>ส่งออกข้อมูลการบ้าน (Export Backup)</h4>
+<p>ดาวน์โหลดไฟล์ข้อมูลรายการการบ้านเก็บไว้ในเครื่อง</p>
+</div>
+<button class="btn-secondary" onclick="exportData()"><i class="fa-solid fa-file-export"></i> Export JSON</button>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4 style="color: #ef4444;">ล้างข้อมูลการบ้านทั้งหมด (Reset All Data)</h4>
+<p>ลบการบ้านทั้งหมดในระบบเพื่อเริ่มต้นใหม่ (ไม่สามารถกู้คืนได้)</p>
+</div>
+<button class="btn-danger" onclick="resetAllData()"><i class="fa-solid fa-trash-can"></i> ลบข้อมูลทั้งหมด</button>
+</div>
+</div>
 
-      // Render Pending Tasks Side Bar
-      const upcomingList = document.getElementById('upcoming-list');
-      upcomingList.innerHTML = '';
-      const pendingTasks = tasks.filter(t => !t.done && !t.overdue);
+</div>
+</main>
+</div>
 
-      if(pendingTasks.length === 0) {
-        upcomingList.innerHTML = '<li class="upcoming-item" style="justify-content:center; color:#ccc;">ไม่มีงานค้าง</li>';
-      } else {
-        pendingTasks.forEach(task => {
-          const li = document.createElement('li');
-          li.className = 'upcoming-item';
-          li.innerHTML = `
-            <span>${task.name}</span>
-            <button onclick="markAsDone(${task.id})" title="ทํางานเสร็จแล้ว"><i class="fa-solid fa-circle-check"></i></button>
-          `;
-          upcomingList.appendChild(li);
-        });
-      }
+<!-- MODAL 1: PROFILE VIEW -->
+<div class="modal" id="profileModal">
+<div class="modal-content">
+<h3 style="text-align: center; margin-bottom: 1rem;">รายละเอียดโปรไฟล์</h3>
+<div class="detail-row"><label>ชื่อผู้ใช้:</label><div class="detail-value" id="mName"></div></div>
+<div class="detail-row"><label>ระดับชั้น:</label><div class="detail-value" id="mGrade"></div></div>
+<div class="detail-row"><label>รหัสนักเรียน:</label><div class="detail-value" id="mId"></div></div>
+<div class="detail-row"><label>สถานศึกษา:</label><div class="detail-value" id="mSchool"></div></div>
+<div class="modal-actions">
+<button class="btn-cancel" onclick="closeModal('profileModal')">ปิด</button>
+<button class="btn-danger" onclick="handleLogout()">ออกจากระบบ</button>
+</div>
+</div>
+</div>
 
-      // Render Overdue Tasks Card
-      const overdueContainer = document.getElementById('overdue-list-container');
-      overdueContainer.innerHTML = '';
-      const overdueTasks = tasks.filter(t => !t.done && t.overdue);
+<!-- MODAL 2: ADD WORK -->
+<div class="modal" id="addModal">
+<div class="modal-content">
+<h3 style="margin-bottom: 1rem;">เพิ่มการบ้านใหม่</h3>
+<div class="detail-row">
+<label>ชื่อวิชา *</label>
+<input type="text" id="newSubject" class="detail-input" placeholder="เช่น คณิตศาสตร์, ภาษาอังกฤษ...">
+</div>
+<div class="detail-row">
+<label>รายละเอียดภาระงาน</label>
+<textarea id="newDetail" class="detail-input" placeholder="กรอกรายละเอียด เช่น หน้าแบบฝึกหัด ข้อที่ต้องทำ..."></textarea>
+</div>
+<div class="detail-row">
+<label>กำหนดส่ง *</label>
+<input type="date" id="newDueDate" class="detail-input">
+</div>
+<div class="modal-actions">
+<button class="btn-cancel" onclick="closeModal('addModal')">ยกเลิก</button>
+<button class="btn-save-settings" style="margin-top:0; padding:0.6rem 1.2rem;" onclick="addNewTask()">บันทึก</button>
+</div>
+</div>
+</div>
 
-      if(overdueTasks.length === 0) {
-        overdueContainer.innerHTML = '<div style="font-size:12px; color:#aaa; margin-top:5px;">ไม่มีงานที่เลยกำหนด</div>';
-      } else {
-        overdueTasks.forEach(task => {
-          const div = document.createElement('div');
-          div.className = 'overdue-item';
-          div.innerHTML = `
-            <div style="display:flex; align-items:center; gap:10px;">
-              <i class="fa-regular fa-file-lines" style="font-size: 20px; color: #555;"></i>
-              <div>
-                <div style="font-weight: 600; font-size: 13px;">${task.name}</div>
-              </div>
-            </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="overdue-tag">เลยกำหนด ${task.daysOverdue || 1} วัน</span>
-              <button onclick="markAsDone(${task.id})" style="border:none; background:none; color:#2ed573; cursor:pointer;"><i class="fa-solid fa-circle-check"></i></button>
-            </div>
-          `;
-          overdueContainer.appendChild(div);
-        });
-      }
+<!-- MODAL 3: TASK DETAIL & EDIT MODAL -->
+<div class="modal" id="taskDetailModal">
+<div class="modal-content">
+<h3 style="margin-bottom: 1rem;">รายละเอียดและแก้ไขงาน</h3>
+<input type="hidden" id="editTaskId">
+<div class="detail-row">
+<label>ชื่อวิชา</label>
+<input type="text" id="editSubject" class="detail-input">
+</div>
+<div class="detail-row">
+<label>รายละเอียดงานแบบเต็ม</label>
+<textarea id="editDetail" class="detail-input"></textarea>
+</div>
+<div class="detail-row">
+<label>กำหนดส่ง</label>
+<input type="date" id="editDueDate" class="detail-input">
+</div>
+<div class="detail-row">
+<label>สถานะการส่งงาน</label>
+<select id="editCompleted" class="detail-input">
+<option value="false">รอดำเนินการ (ยังไม่เสร็จ)</option>
+<option value="true">เสร็จสิ้นเรียบร้อย</option>
+</select>
+</div>
+<div class="modal-actions">
+<button class="btn-danger" onclick="deleteCurrentTask()" style="margin-right: auto;"><i class="fa-solid fa-trash-can"></i> ลบงาน</button>
+<button class="btn-cancel" onclick="closeModal('taskDetailModal')">ยกเลิก</button>
+<button class="btn-save-settings" style="margin-top:0; padding:0.6rem 1.2rem;" onclick="saveTaskDetails()">บันทึก</button>
+</div>
+</div>
+</div>
 
-      // Render Calendar View
-      const calSchedule = document.getElementById('calendar-schedule');
-      calSchedule.innerHTML = tasks.map(t => `
-        <div style="padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-          <span>${t.name}</span>
-          <span style="font-size: 12px; color: ${t.done ? '#2ed573' : (t.overdue ? 'var(--danger)' : '#ffa502')}">
-            ${t.done ? '✔ เสร็จแล้ว' : (t.overdue ? '✘ เลยกำหนด' : '⏳ รอดำเนินการ')}
-          </span>
-        </div>
-      `).join('');
+<!-- MODAL 4: CALENDAR DAY DETAILS & QUICK ADD -->
+<div class="modal" id="calendarDayModal">
+<div class="modal-content">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+<h3 id="calendarDayTitle">รายการส่งงาน</h3>
+<button class="btn-save-settings" style="margin-top:0; padding:0.4rem 0.8rem; font-size:0.85rem;" id="calendarAddBtn"><i class="fa-solid fa-plus"></i> เพิ่มงานวันนี้</button>
+</div>
+<div id="calendarDayTaskList" style="display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto;">
+<!-- Tasks for selected day will be listed here -->
+</div>
+<div class="modal-actions">
+<button class="btn-cancel" onclick="closeModal('calendarDayModal')">ปิด</button>
+</div>
+</div>
+</div>
 
-      // Render Statistics View
-      document.getElementById('stat-ratio-text').textContent = `${completed}/${total}`;
-      document.getElementById('stat-efficiency').textContent = `ประสิทธิภาพการทำงาน: ${progressPercent}%`;
+<script>
+// Setup Date String YYYY-MM-DD
+const today = new Date();
+const yyyy = today.getFullYear();
+const mm = String(today.getMonth() + 1).padStart(2, '0');
+const dd = String(today.getDate()).padStart(2, '0');
+const todayStr = `${yyyy}-${mm}-${dd}`;
 
-      // Render Notifications
-      const notifBox = document.getElementById('notification-box');
-      notifBox.innerHTML = `
-        <div class="notif-item">
-          <div class="notif-icon"><i class="fa-solid fa-exclamation"></i></div>
-          <div>
-            <div style="font-size:14px; font-weight:600;">งานที่เลยกำหนด</div>
-            <div style="font-size:12px; color:var(--text-gray);">คุณมีงานที่เลยกำหนดส่ง ${overdueTasks.length} รายการ</div>
-          </div>
-        </div>
-        <div class="notif-item">
-          <div class="notif-icon"><i class="fa-solid fa-list"></i></div>
-          <div>
-            <div style="font-size:14px; font-weight:600;">งานค้างคงเหลือ</div>
-            <div style="font-size:12px; color:var(--text-gray);">มีงานที่ต้องทำทั้งหมด ${pendingTasks.length} รายการ</div>
-          </div>
-        </div>
-      `;
+// App States
+let user = {
+name: 'User6767',
+grade: 'ม.4/1',
+studentId: 'ST-6767',
+school: 'โรงเรียนวิทยาศาสตร์'
+};
 
-      // Save to LocalStorage
-      localStorage.setItem('my_tasks', JSON.stringify(tasks));
-      localStorage.setItem('my_username', username);
-    }
+let currentFilter = 'all';
 
-    // --- Actions ---
-    function markAsDone(id) {
-      tasks = tasks.map(t => t.id === id ? { ...t, done: true, overdue: false } : t);
-      renderApp();
-    }
+let tasks = [
+{ id: 1, subject: 'คณิตศาสตร์เพิ่มเติม', detail: 'ทำแบบฝึกหัดเรื่องเมทริกซ์ 2.1 ข้อ 1-10 หน้า 45 และแสดงวิธีทำอย่างละเอียดลงในสมุด', dueDate: todayStr, completed: false },
+{ id: 2, subject: 'ภาษาอังกฤษ', detail: 'ท่องจำคำศัพท์ Vocabulary Unit 3 ทั้งหมด 30 คำ พร้อมเตรียมสอบ Vocabulary Quiz คาบเช้า', dueDate: todayStr, completed: true },
+{ id: 3, subject: 'ฟิสิกส์', detail: 'จัดทำรายงานกลุ่มเรื่อง "การเคลื่อนที่แบบโพรเจกไทล์ในชีวิตประจำวัน" ส่งเป็นไฟล์เอกสาร PDF ความยาวไม่เกิน 5 หน้า', dueDate: todayStr, completed: false },
+{ id: 4, subject: 'ชีววิทยา', detail: 'เขียนสรุปแผนผังความคิด (Mind Mapping) เรื่อง การสังเคราะห์ด้วยแสงของพืช ลงกระดาษ A4 ระบายสีให้สวยงาม', dueDate: todayStr, completed: false }
+];
 
-    document.getElementById('add-work-btn').addEventListener('click', () => {
-      const subject = prompt('กรอกชื่อการบ้าน/งานที่ต้องการเพิ่ม:');
-      if (subject && subject.trim() !== '') {
-        tasks.push({
-          id: Date.now(),
-          name: subject.trim(),
-          done: false,
-          overdue: false
-        });
-        renderApp();
-      }
-    });
+let currentCalendarDate = new Date();
 
-    document.getElementById('save-settings-btn').addEventListener('click', () => {
-      const inputVal = document.getElementById('username-input').value;
-      if(inputVal.trim() !== '') {
-        username = inputVal.trim();
-        renderApp();
-        alert('บันทึกข้อมูลสำเร็จ!');
-      }
-    });
+// 1. AUTH FUNCTIONS
+function toggleAuthForm(target) {
+if(target === 'register') {
+document.getElementById('loginCard').style.display = 'none';
+document.getElementById('registerCard').style.display = 'block';
+} else {
+document.getElementById('registerCard').style.display = 'none';
+document.getElementById('loginCard').style.display = 'block';
+}
+}
 
-    // Initial Load
-    renderApp();
-  </script>
+function handleLogin(e) {
+e.preventDefault();
+user.name = document.getElementById('loginUsername').value;
+enterDashboard();
+}
+
+function handleRegister(e) {
+e.preventDefault();
+user.name = document.getElementById('regUsername').value;
+user.grade = document.getElementById('regGrade').value;
+user.studentId = document.getElementById('regStudentId').value || 'ST-NEW';
+user.school = document.getElementById('regSchool').value || 'โรงเรียนทั่วไป';
+
+alert('ลงทะเบียนสำเร็จ! เข้าสู่ระบบอัตโนมัติ');
+enterDashboard();
+}
+
+function enterDashboard() {
+document.getElementById('authPage').style.display = 'none';
+document.getElementById('dashboardPage').style.display = 'flex';
+updateUI();
+initSettingsFields();
+}
+
+function handleLogout() {
+closeModal('profileModal');
+document.getElementById('dashboardPage').style.display = 'none';
+document.getElementById('authPage').style.display = 'flex';
+}
+
+// 2. DASHBOARD & TAB NAVIGATION
+function switchTab(e, tabName) {
+if (e) e.preventDefault();
+document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+if (e) e.currentTarget.classList.add('active');
+
+document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active-view'));
+document.getElementById(`view-${tabName}`).classList.add('active-view');
+
+if (tabName === 'calendar') {
+renderCalendar();
+} else if (tabName === 'statistics') {
+renderStatistics();
+}
+}
+
+function updateUI() {
+document.getElementById('welcomeUser').textContent = user.name;
+document.getElementById('welcomeGrade').textContent = user.grade;
+document.getElementById('displayUsername').textContent = user.name;
+
+renderTasks();
+renderSubjectSummary();
+updateStats();
+}
+
+function updateStats() {
+const total = tasks.length;
+const completed = tasks.filter(t => t.completed).length;
+const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+document.getElementById('totalCount').textContent = total;
+document.getElementById('completedCount').textContent = completed;
+document.getElementById('progressPercent').textContent = percent + '%';
+document.getElementById('progressBarFill').style.width = percent + '%';
+}
+
+function setFilter(filter, btn) {
+currentFilter = filter;
+document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+renderTasks();
+}
+
+function renderTasks() {
+const container = document.getElementById('taskListContainer');
+const search = document.getElementById('searchInput').value.toLowerCase();
+
+container.innerHTML = '';
+
+const filtered = tasks.filter(task => {
+const matchesFilter = currentFilter === 'all' || 
+(currentFilter === 'pending' && !task.completed) || 
+(currentFilter === 'completed' && task.completed);
+
+const matchesSearch = task.subject.toLowerCase().includes(search) || 
+task.detail.toLowerCase().includes(search);
+
+return matchesFilter && matchesSearch;
+});
+
+if (filtered.length === 0) {
+container.innerHTML = `<div style="text-align:center; padding: 2rem; opacity: 0.6;">ไม่พบรายการการบ้าน</div>`;
+return;
+}
+
+filtered.forEach(task => {
+const card = document.createElement('div');
+card.className = `rich-task-card ${task.completed ? 'completed' : ''}`;
+card.onclick = () => openTaskDetailModal(task.id);
+
+card.innerHTML = `
+<div class="task-header-row">
+<span class="subject-tag">${task.subject}</span>
+<span class="status-tag ${task.completed ? 'done' : 'pending'}">${task.completed ? 'เสร็จสิ้น' : 'รอดำเนินการ'}</span>
+</div>
+<div class="task-body-title">${task.detail}</div>
+<div class="task-footer-row">
+<div class="due-date-text"><i class="fa-regular fa-clock"></i> กำหนดส่ง: ${task.dueDate}</div>
+<div><i class="fa-solid fa-chevron-right"></i></div>
+</div>
+`;
+container.appendChild(card);
+});
+}
+
+function renderSubjectSummary() {
+const container = document.getElementById('subjectSummaryContainer');
+container.innerHTML = '';
+
+const pendingTasks = tasks.filter(t => !t.completed);
+const subjectCounts = {};
+
+pendingTasks.forEach(t => {
+subjectCounts[t.subject] = (subjectCounts[t.subject] || 0) + 1;
+});
+
+const subjects = Object.keys(subjectCounts);
+
+if (subjects.length === 0) {
+container.innerHTML = `<li style="font-size:0.85rem; opacity:0.6; text-align:center; padding:0.5rem;">ไม่มีงานค้าง 🎉</li>`;
+return;
+}
+
+subjects.forEach(sub => {
+const li = document.createElement('li');
+li.className = 'subject-item-pill';
+li.innerHTML = `
+<span>${sub}</span>
+<span class="badge">${subjectCounts[sub]} งาน</span>
+`;
+container.appendChild(li);
+});
+}
+
+// 3. TASK MANAGEMENT MODALS
+function openAddModal(defaultDate = todayStr) {
+document.getElementById('newSubject').value = '';
+document.getElementById('newDetail').value = '';
+document.getElementById('newDueDate').value = defaultDate;
+document.getElementById('addModal').style.display = 'flex';
+}
+
+function addNewTask() {
+const subject = document.getElementById('newSubject').value.trim();
+const detail = document.getElementById('newDetail').value.trim();
+const dueDate = document.getElementById('newDueDate').value;
+
+if (!subject || !dueDate) {
+alert('กรุณากรอกชื่อวิชาและกำหนดส่ง');
+return;
+}
+
+const newTask = {
+id: Date.now(),
+subject: subject,
+detail: detail || 'ไม่มีรายละเอียดเพิ่มเติม',
+dueDate: dueDate,
+completed: false
+};
+
+tasks.push(newTask);
+closeModal('addModal');
+updateUI();
+if (document.getElementById('view-calendar').classList.contains('active-view')) {
+renderCalendar();
+}
+}
+
+function openTaskDetailModal(id) {
+const task = tasks.find(t => t.id === id);
+if (!task) return;
+
+document.getElementById('editTaskId').value = task.id;
+document.getElementById('editSubject').value = task.subject;
+document.getElementById('editDetail').value = task.detail;
+document.getElementById('editDueDate').value = task.dueDate;
+document.getElementById('editCompleted').value = task.completed.toString();
+
+document.getElementById('taskDetailModal').style.display = 'flex';
+}
+
+function saveTaskDetails() {
+const id = parseInt(document.getElementById('editTaskId').value);
+const task = tasks.find(t => t.id === id);
+
+if (task) {
+task.subject = document.getElementById('editSubject').value.trim();
+task.detail = document.getElementById('editDetail').value.trim();
+task.dueDate = document.getElementById('editDueDate').value;
+task.completed = document.getElementById('editCompleted').value === 'true';
+}
+
+closeModal('taskDetailModal');
+updateUI();
+if (document.getElementById('view-calendar').classList.contains('active-view')) {
+renderCalendar();
+}
+}
+
+function deleteCurrentTask() {
+const id = parseInt(document.getElementById('editTaskId').value);
+if (confirm('คุณต้องการลบการบ้านนี้ใช่หรือไม่?')) {
+tasks = tasks.filter(t => t.id !== id);
+closeModal('taskDetailModal');
+updateUI();
+if (document.getElementById('view-calendar').classList.contains('active-view')) {
+renderCalendar();
+}
+}
+}
+
+// 4. CALENDAR LOGIC
+function renderCalendar() {
+const year = currentCalendarDate.getFullYear();
+const month = currentCalendarDate.getMonth();
+
+const monthNames = [
+'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+];
+
+document.getElementById('calendarMonthYear').textContent = `${monthNames[month]} ${year + 543}`;
+
+const firstDay = new Date(year, month, 1).getDay();
+const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+const container = document.getElementById('calendarDaysContainer');
+container.innerHTML = '';
+
+// Empty slots before start of month
+for (let i = 0; i < firstDay; i++) {
+const emptyCell = document.createElement('div');
+emptyCell.className = 'calendar-day empty';
+container.appendChild(emptyCell);
+}
+
+// Days of the month
+for (let day = 1; day <= daysInMonth; day++) {
+const cell = document.createElement('div');
+const dayStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+const isToday = dayStr === todayStr;
+cell.className = `calendar-day ${isToday ? 'today' : ''}`;
+
+const dayTasks = tasks.filter(t => t.dueDate === dayStr);
+
+cell.innerHTML = `
+<div class="day-header">
+<span class="day-number">${day}</span>
+<span class="day-add-btn" onclick="event.stopPropagation(); openAddModal('${dayStr}')"><i class="fa-solid fa-plus"></i></span>
+</div>
+`;
+
+dayTasks.forEach(task => {
+const badge = document.createElement('div');
+badge.className = `task-badge ${task.completed ? 'done' : ''}`;
+badge.textContent = `${task.subject}`;
+cell.appendChild(badge);
+});
+
+cell.onclick = () => openCalendarDayModal(dayStr, dayTasks);
+container.appendChild(cell);
+}
+}
+
+function changeMonth(delta) {
+currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
+renderCalendar();
+}
+
+function openCalendarDayModal(dateStr, dayTasks) {
+document.getElementById('calendarDayTitle').textContent = `รายการส่งงาน (${dateStr})`;
+const container = document.getElementById('calendarDayTaskList');
+container.innerHTML = '';
+
+document.getElementById('calendarAddBtn').onclick = () => {
+closeModal('calendarDayModal');
+openAddModal(dateStr);
+};
+
+if (dayTasks.length === 0) {
+container.innerHTML = `<div style="text-align:center; padding: 1rem; opacity: 0.6;">ไม่มีการบ้านกำหนดส่งในวันนี้</div>`;
+} else {
+dayTasks.forEach(task => {
+const item = document.createElement('div');
+item.className = 'subject-item-pill';
+item.style.cursor = 'pointer';
+item.onclick = () => {
+closeModal('calendarDayModal');
+openTaskDetailModal(task.id);
+};
+item.innerHTML = `
+<div>
+<div style="font-weight:600;">${task.subject}</div>
+<div style="font-size:0.8rem; opacity:0.8;">${task.detail}</div>
+</div>
+<span class="badge" style="background:${task.completed ? '#10b981' : 'var(--primary-color)'}">
+${task.completed ? 'เสร็จแล้ว' : 'ค้างอยู่'}
+</span>
+`;
+container.appendChild(item);
+});
+}
+
+document.getElementById('calendarDayModal').style.display = 'flex';
+}
+
+// 5. STATISTICS LOGIC
+function renderStatistics() {
+const container = document.getElementById('statsDetailContainer');
+container.innerHTML = '';
+
+const subjectsMap = {};
+
+tasks.forEach(t => {
+if (!subjectsMap[t.subject]) {
+subjectsMap[t.subject] = { total: 0, completed: 0 };
+}
+subjectsMap[t.subject].total += 1;
+if (t.completed) subjectsMap[t.subject].completed += 1;
+});
+
+const subjects = Object.keys(subjectsMap);
+
+if (subjects.length === 0) {
+container.innerHTML = `<div style="text-align:center; padding: 2rem; opacity: 0.6;">ยังไม่มีข้อมูลสถิติ</div>`;
+return;
+}
+
+subjects.forEach(sub => {
+const stat = subjectsMap[sub];
+const percent = Math.round((stat.completed / stat.total) * 100);
+
+const card = document.createElement('div');
+card.className = 'stat-card';
+card.style.textAlign = 'left';
+card.innerHTML = `
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+<span style="font-weight:600; font-size:1.05rem;">${sub}</span>
+<span style="font-weight:700; color:var(--primary-color);">${stat.completed}/${stat.total} งาน (${percent}%)</span>
+</div>
+<div class="progress-bar-bg" style="height:12px;">
+<div class="progress-bar-fill" style="width: ${percent}%;"></div>
+</div>
+`;
+container.appendChild(card);
+});
+}
+
+// 6. SETTINGS & PROFILE
+function openProfileModal() {
+document.getElementById('mName').textContent = user.name;
+document.getElementById('mGrade').textContent = user.grade;
+document.getElementById('mId').textContent = user.studentId;
+document.getElementById('mSchool').textContent = user.school;
+
+document.getElementById('profileModal').style.display = 'flex';
+}
+
+function closeModal(modalId) {
+document.getElementById(modalId).style.display = 'none';
+}
+
+function switchSettingsPanel(panelId, e) {
+document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
+e.currentTarget.classList.add('active');
+
+document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active-panel'));
+document.getElementById(panelId).classList.add('active-panel');
+}
+
+function initSettingsFields() {
+document.getElementById('setProfileName').value = user.name;
+document.getElementById('setStudentId').value = user.studentId;
+document.getElementById('setGrade').value = user.grade;
+document.getElementById('setSchool').value = user.school;
+}
+
+function saveProfileSettings() {
+user.name = document.getElementById('setProfileName').value.trim() || user.name;
+user.studentId = document.getElementById('setStudentId').value.trim() || user.studentId;
+user.grade = document.getElementById('setGrade').value.trim() || user.grade;
+user.school = document.getElementById('setSchool').value.trim() || user.school;
+
+updateUI();
+alert('บันทึกข้อมูลส่วนตัวเรียบร้อยแล้ว!');
+}
+
+function changeThemeColor(colorName, el) {
+document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+el.classList.add('selected');
+
+document.body.classList.remove('theme-blue', 'theme-green', 'theme-orange');
+if (colorName !== 'purple') {
+document.body.classList.add(`theme-${colorName}`);
+}
+}
+
+function toggleDarkMode() {
+const isDark = document.getElementById('darkModeToggle').checked;
+if (isDark) {
+document.body.classList.add('dark-mode');
+} else {
+document.body.classList.remove('dark-mode');
+}
+}
+
+function changeFontFamily(font) {
+document.documentElement.style.setProperty('--font-family', font);
+}
+
+function changeFontScale(scale) {
+document.documentElement.style.setProperty('--font-scale', scale);
+}
+
+function exportData() {
+const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks, null, 2));
+const downloadAnchor = document.createElement('a');
+downloadAnchor.setAttribute("href", dataStr);
+downloadAnchor.setAttribute("download", "homework_backup.json");
+document.body.appendChild(downloadAnchor);
+downloadAnchor.click();
+downloadAnchor.remove();
+}
+
+function resetAllData() {
+if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบการบ้านทั้งหมด? การกระทำนี้ไม่สามารถย้อนกลับได้')) {
+tasks = [];
+updateUI();
+if (document.getElementById('view-calendar').classList.contains('active-view')) {
+renderCalendar();
+}
+alert('ลบข้อมูลเรียบร้อยแล้ว');
+}
+}
+</script>
 </body>
 </html>

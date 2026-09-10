@@ -74,8 +74,10 @@ box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); z-index: 10; color: #ffffff;
 .input-group input { width: 100%; padding: 0.8rem 1.2rem; border: none; border-radius: 12px; font-size: 1rem; outline: none; background: #ffffff; color: #000; }
 .auth-btn { background-color: #ffffff; color: #000; border: none; padding: 0.7rem 2.5rem; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; display: block; margin: 1rem auto 0; width: 100%; }
 .auth-btn:hover { background-color: #f1f5f9; }
+.auth-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 .auth-switch { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #ffffff; }
 .auth-switch a { color: #ffffff; font-weight: 600; text-decoration: underline; cursor: pointer; }
+.auth-error { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.6); color: #ffffff; font-size: 0.85rem; padding: 0.6rem 0.9rem; border-radius: 10px; margin-bottom: 0.8rem; display: none; }
 
 /* 2. DASHBOARD LAYOUT */
 .dashboard-container { display: none; width: 100vw; height: 100vh; background-color: var(--bg-color); }
@@ -246,6 +248,7 @@ textarea.detail-input { resize: vertical; min-height: 80px; }
 <div id="registerCard" class="auth-card" style="display: none;">
 <h2>Create Account</h2>
 <p class="subtitle">สมัครสมาชิกเพื่อเริ่มต้นใช้งาน</p>
+<div class="auth-error" id="registerError"></div>
 <form onsubmit="handleRegister(event)">
 <div class="input-group">
 <input type="text" id="regUsername" placeholder="ชื่อผู้ใช้..." required>
@@ -262,7 +265,7 @@ textarea.detail-input { resize: vertical; min-height: 80px; }
 <div class="input-group">
 <input type="text" id="regSchool" placeholder="ชื่อโรงเรียน...">
 </div>
-<button type="submit" class="auth-btn">ลงทะเบียน</button>
+<button type="submit" class="auth-btn" id="registerSubmitBtn">ลงทะเบียน</button>
 </form>
 <div class="auth-switch">
 มีบัญชีอยู่แล้ว? <a onclick="toggleAuthForm('login')">เข้าสู่ระบบ</a>
@@ -620,6 +623,45 @@ textarea.detail-input { resize: vertical; min-height: 80px; }
 </div>
 
 <script>
+// ============================================================
+// GOOGLE SHEET INTEGRATION
+// ใส่ URL ของ Google Apps Script Web App (deploy จาก Google Sheet)
+// ============================================================
+const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbw7tr-S7cOWQT7IGwVRsYRIiW48se_U8RKMIJS5yoMJAfDEZTFqX7E57aLjiY1OFyen/exec';
+
+// ส่งข้อมูลผู้ใช้ที่ลงทะเบียนไปบันทึกลง Google Sheet
+// ใช้ Content-Type: text/plain เพื่อเลี่ยงปัญหา CORS preflight กับ Apps Script
+// mode: 'cors' (ไม่ใช่ no-cors) เพราะ Apps Script Web App ที่ deploy แบบ "Anyone" จะแนบ
+// Access-Control-Allow-Origin กลับมาให้อยู่แล้ว ทำให้เราอ่าน response จริงจาก doPost ได้
+// (จำเป็นมากสำหรับการดีบัก เพราะ doPost ของคุณ return status/error กลับมาให้อ่าน)
+//
+// ⚠️ สำคัญมาก: doPost ของคุณ map ค่าโดยจับคู่ "ชื่อ key ที่ส่งมา" กับ "ชื่อหัวคอลัมน์แถวที่ 1
+// ของ Sheet" แบบตรงตัวทุกตัวอักษร (case-sensitive) ถ้าหัวคอลัมน์ในชีตไม่ตรงกับ key ด้านล่าง
+// (username, password, grade, studentId, school, timestamp) ค่านั้นจะถูกบันทึกเป็นค่าว่าง ""
+// ให้ตรวจว่าหัวคอลัมน์แถวแรกของ Sheet สะกด/เว้นวรรค ตรงกับ key พวกนี้เป๊ะๆ หรือแก้ key ด้านล่าง
+// ให้ตรงกับหัวคอลัมน์ของคุณแทน
+function sendUserToSheet(userData) {
+return fetch(SHEET_API_URL, {
+method: 'POST',
+mode: 'cors',
+headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+body: JSON.stringify({
+username: userData.name,
+password: userData.password,
+grade: userData.grade,
+studentId: userData.studentId,
+school: userData.school,
+timestamp: new Date().toISOString()
+})
+})
+.then(function(response) {
+return response.text().then(function(text) {
+console.log('Google Sheet response:', text);
+return text;
+});
+});
+}
+
 // Setup Date String YYYY-MM-DD
 const today = new Date();
 const yyyy = today.getFullYear();
@@ -663,14 +705,49 @@ user.name = document.getElementById('loginUsername').value;
 enterDashboard();
 }
 
-function handleRegister(e) {
+async function handleRegister(e) {
 e.preventDefault();
-user.name = document.getElementById('regUsername').value;
-user.grade = document.getElementById('regGrade').value;
-user.studentId = document.getElementById('regStudentId').value || 'ST-NEW';
-user.school = document.getElementById('regSchool').value || 'โรงเรียนทั่วไป';
 
-alert('ลงทะเบียนสำเร็จ! เข้าสู่ระบบอัตโนมัติ');
+const errorBox = document.getElementById('registerError');
+errorBox.style.display = 'none';
+
+user.name = document.getElementById('regUsername').value.trim();
+const password = document.getElementById('regPassword').value;
+user.grade = document.getElementById('regGrade').value.trim();
+user.studentId = document.getElementById('regStudentId').value.trim() || 'ST-NEW';
+user.school = document.getElementById('regSchool').value.trim() || 'โรงเรียนทั่วไป';
+
+const submitBtn = document.getElementById('registerSubmitBtn');
+submitBtn.disabled = true;
+submitBtn.textContent = 'กำลังบันทึกข้อมูล...';
+
+try {
+const sheetResponseText = await sendUserToSheet({
+name: user.name,
+password: password,
+grade: user.grade,
+studentId: user.studentId,
+school: user.school
+});
+
+// ลองแปลง response เป็น JSON เพื่อเช็ค status ที่ doPost ส่งกลับมา (success / error)
+let sheetResult = null;
+try { sheetResult = JSON.parse(sheetResponseText); } catch (parseErr) { /* ไม่ใช่ JSON ก็ข้ามไป */ }
+
+if (sheetResult && sheetResult.status === 'error') {
+console.error('Apps Script ส่ง error กลับมา:', sheetResult.message);
+errorBox.textContent = 'บันทึกลง Google Sheet ไม่สำเร็จ: ' + sheetResult.message;
+errorBox.style.display = 'block';
+}
+} catch (err) {
+console.error('ส่งข้อมูลไปยัง Google Sheet ไม่สำเร็จ:', err);
+errorBox.textContent = 'เชื่อมต่อ Google Sheet ไม่สำเร็จ (ตรวจสอบ URL / การ deploy / CORS ใน Console) แต่ระบบจะพาเข้าใช้งานต่อไป';
+errorBox.style.display = 'block';
+}
+
+submitBtn.disabled = false;
+submitBtn.textContent = 'ลงทะเบียน';
+
 enterDashboard();
 }
 
